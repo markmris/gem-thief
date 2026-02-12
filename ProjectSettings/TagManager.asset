@@ -41,14 +41,20 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Floor
+    uniqueID: 2054501449
+    locked: 0
+  - name: Characters
+    uniqueID: 1631328889
+    locked: 0
   - name: Tilemap
     uniqueID: 445956989
     locked: 0
   - name: Doors
     uniqueID: 3715139417
     locked: 0
-  - name: Characters
-    uniqueID: 1631328889
+  - name: Shade
+    uniqueID: 296162547
     locked: 0
   - name: UI
     uniqueID: 3369296435
