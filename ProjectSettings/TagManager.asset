@@ -50,6 +50,9 @@ TagManager:
   - name: Tilemap
     uniqueID: 445956989
     locked: 0
+  - name: Objects
+    uniqueID: 1126827023
+    locked: 0
   - name: Doors
     uniqueID: 3715139417
     locked: 0

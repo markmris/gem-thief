@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     public float lookMagnitude;
     public CinemachinePositionComposer positionComposer;
     private Vector2 moveDirection;
+
+    public bool visible;
     
     private Vector2 defaultCamOffset = new Vector2(0, 0.5f);
     private Vector2 lookDirection;
