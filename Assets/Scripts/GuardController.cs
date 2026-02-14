@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
 
 public class GuardController : MonoBehaviour
@@ -9,30 +9,37 @@ public class GuardController : MonoBehaviour
     public Sprite questionMarkSprite;
     public Sprite exclamationMarkSprite;
     private Transform player;
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     private Vector2 distanceFromPlayer;
     private Vector2 facingDirection = Vector2.down;
+
+    private int state = 0;
+    private bool canSeePlayer;
+    private bool debounce = false;
 
     void Start()
     {
         player = GameObject.Find("Player").transform;
-        spriteRenderer = transform.GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
-        bool canSeePlayer = LookForPlayer();
+        canSeePlayer = LookForPlayer();
 
         if (canSeePlayer)
         {
-            print("PLAYER SEEN");
+            if (!debounce)
+            {
+                debounce = true;
+                StartCoroutine(LookAtPlayer());
+            }
         }
     }
 
     bool LookForPlayer()
     {
         distanceFromPlayer = player.position - transform.position;
-        if (distanceFromPlayer.magnitude > viewDistance)return false;
+        if (distanceFromPlayer.magnitude > viewDistance) return false;
 
         float angleToPlayer = Vector2.Angle(facingDirection, distanceFromPlayer.normalized);
         if (angleToPlayer > viewAngle / 2f) return false;
@@ -41,5 +48,47 @@ public class GuardController : MonoBehaviour
         if (playerCast.collider && !playerCast.collider.transform.CompareTag("Player")) return false;
 
         else return true;
+    }
+
+    void ChangeState()
+    {
+        switch (state)
+        {
+            case 0:
+                spriteRenderer.sprite = null;
+                break;
+            
+            case 1:
+                spriteRenderer.sprite = questionMarkSprite;
+                break;
+            
+            case 2:
+                spriteRenderer.sprite = exclamationMarkSprite;
+                break;
+        }
+    }
+
+    IEnumerator LookAtPlayer()
+    {
+        state = 1;
+        float time = Time.time;
+
+        while (canSeePlayer)
+        {
+            ChangeState();
+
+            if (Time.time - time >= 1.5f)
+            {
+                state = 2;
+                ChangeState();
+                yield break;
+            }
+
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        state = 0;
+        ChangeState();
+        debounce = false;
     }
 }

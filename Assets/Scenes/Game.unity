@@ -12455,10 +12455,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GuardController
   walkSpeed: 0
-  viewDistance: 10
-  viewAngle: 60
-  questionMarkSprite: {fileID: 0}
-  exclamationMarkSprite: {fileID: 0}
+  viewDistance: 8
+  viewAngle: 150
+  questionMarkSprite: {fileID: 12214862182170291, guid: 323b88daf2a2ad14bae5a55b3f01c358, type: 3}
+  exclamationMarkSprite: {fileID: 7264511862112166592, guid: 375e0bdf211117c499bbd3d2133d2b07, type: 3}
+  spriteRenderer: {fileID: 23152424}
 --- !u!1 &1472708322
 GameObject:
   m_ObjectHideFlags: 0
