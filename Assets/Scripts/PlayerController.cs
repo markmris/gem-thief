@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public Sprite playerBack;
     public Sprite playerLeft;
     public Sprite playerRight;
+    public GameObject donutObject;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rigidBody;
 
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveDirection;
 
     public bool visible;
+    private bool donut;
     
     private Vector2 defaultCamOffset = new Vector2(0, 0.5f);
     private Vector2 lookDirection;
@@ -71,5 +73,27 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         rigidBody.linearVelocity = moveDirection * walkSpeed;
+    }
+
+    void OnCollisionEnter2D(Collision2D collisionObj)
+    {
+        if (collisionObj.transform.name == "DiningTable" && !donut)
+        {
+            foreach(Transform child in collisionObj.transform)
+            {
+                if (child.name == "Donut") Destroy(child.gameObject);
+            }
+
+            donut = true;
+        }
+        else if (collisionObj.transform.name == "Plate" && donut)
+        {
+            GameObject donutClone = Instantiate(donutObject);
+            SpriteRenderer donutRenderer = donutClone.GetComponent<SpriteRenderer>();
+            donutRenderer.sortingLayerName = "Objects";
+            donutRenderer.sortingOrder = 1;
+            donutClone.transform.position = collisionObj.transform.position;
+            collisionObj.transform.name = "UsedPlate";
+        }
     }
 }
