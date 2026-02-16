@@ -3,15 +3,24 @@ using UnityEngine;
 
 public class GuardController : MonoBehaviour
 {
+    [Header ("---- Guard Variables ----")]
     public float walkSpeed;
     public float viewDistance;
     public float viewAngle;
     public Sprite questionMarkSprite;
     public Sprite exclamationMarkSprite;
+    public SpriteRenderer statusSpriteRenderer;
+    private SpriteRenderer guardSpriteRenderer;
     private Transform player;
-    public SpriteRenderer spriteRenderer;
     private Vector2 distanceFromPlayer;
-    private Vector2 facingDirection = Vector2.down;
+    private Vector2 facingDirection;
+
+    [Header ("---- Guard Objects ----")]
+    public Sprite guardFront;
+    public Sprite guardBack;
+    public Sprite guardLeft;
+    public Sprite guardRight;
+    private Rigidbody2D rigidBody;
 
     private int state = 0;
     private bool canSeePlayer;
@@ -20,10 +29,29 @@ public class GuardController : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player").transform;
+        guardSpriteRenderer = transform.GetComponent<SpriteRenderer>();
+        rigidBody = transform.GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
+        if (guardSpriteRenderer.sprite == guardFront)
+        {
+            facingDirection = Vector2.down;
+        }
+        else if (guardSpriteRenderer.sprite == guardBack)
+        {
+            facingDirection = Vector2.up;
+        }
+        else if (guardSpriteRenderer.sprite == guardLeft)
+        {
+            facingDirection = Vector2.left;
+        }
+        else if (guardSpriteRenderer.sprite == guardRight)
+        {
+            facingDirection = Vector2.right;
+        }
+
         canSeePlayer = LookForPlayer();
 
         if (canSeePlayer)
@@ -55,15 +83,15 @@ public class GuardController : MonoBehaviour
         switch (state)
         {
             case 0:
-                spriteRenderer.sprite = null;
+                statusSpriteRenderer.sprite = null;
                 break;
             
             case 1:
-                spriteRenderer.sprite = questionMarkSprite;
+                statusSpriteRenderer.sprite = questionMarkSprite;
                 break;
             
             case 2:
-                spriteRenderer.sprite = exclamationMarkSprite;
+                statusSpriteRenderer.sprite = exclamationMarkSprite;
                 break;
         }
     }

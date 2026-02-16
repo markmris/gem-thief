@@ -39,21 +39,21 @@ public class PlayerController : MonoBehaviour
         moveDirection = moveAction.action.ReadValue<Vector2>();
         lookDirection = lookAction.action.ReadValue<Vector2>();
 
-        if (moveDirection.y < 0)
-        {
-            spriteRenderer.sprite = playerFront;
-        }
-        else if (moveDirection.y > 0)
-        {
-            spriteRenderer.sprite = playerBack;
-        }
-        else if (moveDirection.x < 0)
+        if (moveDirection.x < 0)
         {
             spriteRenderer.sprite = playerLeft;
         }
         else if (moveDirection.x > 0)
         {
             spriteRenderer.sprite = playerRight;
+        }
+        else if (moveDirection.y < 0)
+        {
+            spriteRenderer.sprite = playerFront;
+        }
+        else if (moveDirection.y > 0)
+        {
+            spriteRenderer.sprite = playerBack;
         }
 
         if (lookDirection.x != 0)
