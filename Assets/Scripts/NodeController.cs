@@ -5,7 +5,7 @@ public class NodeController : MonoBehaviour
 {
     private List<Transform> nodes = new List<Transform>();
 
-    void Start()
+    void Awake()
     {
         foreach (Transform child in transform)
         {
