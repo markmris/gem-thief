@@ -24,6 +24,8 @@ public class GuardController : MonoBehaviour
 
     private Transform currentNode;
     private AIDestinationSetter aiDestinationSetter;
+    private NodeController nodeController;
+    private bool pathfindingDebounce = false;
 
     private int state = 0;
     private bool canSeePlayer;
@@ -32,13 +34,17 @@ public class GuardController : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player").transform;
+        nodeController = GameObject.Find("NodeContainer").GetComponent<NodeController>();
         guardSpriteRenderer = transform.GetComponent<SpriteRenderer>();
         aiDestinationSetter = transform.GetComponent<AIDestinationSetter>();
+
+        currentNode = nodeController.GetNextNode();
+        aiDestinationSetter.target = currentNode;
     }
 
     void Update()
     {
-        if (Mathf.Abs(aiDestinationSetter.target.position.x - transform.position.x) > .4f)
+        if (Mathf.Abs(aiDestinationSetter.target.position.x - transform.position.x) > .7f)
         {
             if (aiDestinationSetter.target.position.x > transform.position.x)
             {
@@ -69,11 +75,19 @@ public class GuardController : MonoBehaviour
 
         if (canSeePlayer)
         {
+            aiDestinationSetter.target = transform;
+
             if (!debounce)
             {
                 debounce = true;
                 StartCoroutine(LookAtPlayer());
             }
+        }
+
+        if (!pathfindingDebounce && Mathf.Abs(aiDestinationSetter.target.position.x - transform.position.x) < 0.4f && Mathf.Abs(aiDestinationSetter.target.position.y - transform.position.y) < 0.4f)
+        {
+            pathfindingDebounce = true;
+            StartCoroutine(ContinuePatrol());
         }
     }
 
@@ -131,5 +145,15 @@ public class GuardController : MonoBehaviour
         state = 0;
         ChangeState();
         debounce = false;
+        aiDestinationSetter.target = currentNode;
+    }
+
+    IEnumerator ContinuePatrol()
+    {
+        yield return new WaitForSeconds(Random.Range(2, 5));
+
+        currentNode = nodeController.GetNextNode();
+        aiDestinationSetter.target = currentNode;
+        pathfindingDebounce = false;
     }
 }
