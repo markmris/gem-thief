@@ -38,49 +38,78 @@ public class GuardController : MonoBehaviour
         guardSpriteRenderer = transform.GetComponent<SpriteRenderer>();
         aiDestinationSetter = transform.GetComponent<AIDestinationSetter>();
 
-        currentNode = nodeController.GetNextNode();
+        currentNode = nodeController.GetNextNode(transform);
         aiDestinationSetter.target = currentNode;
     }
 
     void Update()
     {
-        if (Mathf.Abs(aiDestinationSetter.target.position.x - transform.position.x) > .7f)
-        {
-            if (aiDestinationSetter.target.position.x > transform.position.x)
-            {
-                guardSpriteRenderer.sprite = guardRight;
-                facingDirection = Vector2.right;
-            }
-            else
-            {
-                guardSpriteRenderer.sprite = guardLeft;
-                facingDirection = Vector2.left;
-            }
-        }
-        else
-        {
-            if (aiDestinationSetter.target.position.y > transform.position.y)
-            {
-                guardSpriteRenderer.sprite = guardBack;
-                facingDirection = Vector2.up;
-            }
-            else
-            {
-                guardSpriteRenderer.sprite = guardFront;
-                facingDirection = Vector2.down;
-            }
-        }
-
         canSeePlayer = LookForPlayer();
 
         if (canSeePlayer)
         {
             aiDestinationSetter.target = transform;
 
+            if (Mathf.Abs(distanceFromPlayer.normalized.y) > Mathf.Abs(distanceFromPlayer.normalized.x))
+            {
+                if (player.position.y > transform.position.y)
+                {
+                    guardSpriteRenderer.sprite = guardBack;
+                    facingDirection = Vector2.up;
+                }
+                else
+                {
+                    guardSpriteRenderer.sprite = guardFront;
+                    facingDirection = Vector2.down;
+                }
+            }
+            else
+            {
+                if (player.position.x > transform.position.x)
+                {
+                    guardSpriteRenderer.sprite = guardRight;
+                    facingDirection = Vector2.right;
+                }
+                else
+                {
+                    guardSpriteRenderer.sprite = guardLeft;
+                    facingDirection = Vector2.left;
+                }
+            }
+
             if (!debounce)
             {
                 debounce = true;
                 StartCoroutine(LookAtPlayer());
+            }
+        }
+        else
+        {
+            if (Mathf.Abs(aiDestinationSetter.target.position.x - transform.position.x) > .7f)
+            {
+                if (aiDestinationSetter.target.position.x > transform.position.x)
+                {
+                    guardSpriteRenderer.sprite = guardRight;
+                    facingDirection = Vector2.right;
+                }
+                else
+                {
+                    guardSpriteRenderer.sprite = guardLeft;
+                    facingDirection = Vector2.left;
+                }
+            }
+            else
+            {
+                if (aiDestinationSetter.target.position.y > transform.position.y)
+                {
+                    guardSpriteRenderer.sprite = guardBack;
+                    facingDirection = Vector2.up;
+                }
+                else
+                {
+                    guardSpriteRenderer.sprite = guardFront;
+                    facingDirection = Vector2.down;
+                }
             }
         }
 
@@ -152,7 +181,7 @@ public class GuardController : MonoBehaviour
     {
         yield return new WaitForSeconds(Random.Range(2, 5));
 
-        currentNode = nodeController.GetNextNode();
+        currentNode = nodeController.GetNextNode(currentNode);
         aiDestinationSetter.target = currentNode;
         pathfindingDebounce = false;
     }

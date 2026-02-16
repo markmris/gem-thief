@@ -13,8 +13,15 @@ public class NodeController : MonoBehaviour
         }
     }
 
-    public Transform GetNextNode()
+    public Transform GetNextNode(Transform ignoredNode)
     {
-        return nodes[Random.Range(0, nodes.Count)];
+        Transform nextNode = nodes[Random.Range(0, nodes.Count)];
+
+        while (nextNode == ignoredNode)
+        {
+            nextNode = nodes[Random.Range(0, nodes.Count)];
+        }
+
+        return nextNode;
     }
 }
