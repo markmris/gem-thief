@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Pathfinding;
 
 public class GuardController : MonoBehaviour
 {
@@ -20,7 +21,9 @@ public class GuardController : MonoBehaviour
     public Sprite guardBack;
     public Sprite guardLeft;
     public Sprite guardRight;
-    private Rigidbody2D rigidBody;
+
+    private Transform currentNode;
+    private AIDestinationSetter aiDestinationSetter;
 
     private int state = 0;
     private bool canSeePlayer;
@@ -30,26 +33,36 @@ public class GuardController : MonoBehaviour
     {
         player = GameObject.Find("Player").transform;
         guardSpriteRenderer = transform.GetComponent<SpriteRenderer>();
-        rigidBody = transform.GetComponent<Rigidbody2D>();
+        aiDestinationSetter = transform.GetComponent<AIDestinationSetter>();
     }
 
     void Update()
     {
-        if (guardSpriteRenderer.sprite == guardFront)
+        if (Mathf.Abs(aiDestinationSetter.target.position.x - transform.position.x) > .4f)
         {
-            facingDirection = Vector2.down;
+            if (aiDestinationSetter.target.position.x > transform.position.x)
+            {
+                guardSpriteRenderer.sprite = guardRight;
+                facingDirection = Vector2.right;
+            }
+            else
+            {
+                guardSpriteRenderer.sprite = guardLeft;
+                facingDirection = Vector2.left;
+            }
         }
-        else if (guardSpriteRenderer.sprite == guardBack)
+        else
         {
-            facingDirection = Vector2.up;
-        }
-        else if (guardSpriteRenderer.sprite == guardLeft)
-        {
-            facingDirection = Vector2.left;
-        }
-        else if (guardSpriteRenderer.sprite == guardRight)
-        {
-            facingDirection = Vector2.right;
+            if (aiDestinationSetter.target.position.y > transform.position.y)
+            {
+                guardSpriteRenderer.sprite = guardBack;
+                facingDirection = Vector2.up;
+            }
+            else
+            {
+                guardSpriteRenderer.sprite = guardFront;
+                facingDirection = Vector2.down;
+            }
         }
 
         canSeePlayer = LookForPlayer();
