@@ -13,6 +13,7 @@ public class GuardController : MonoBehaviour
     public SpriteRenderer statusSpriteRenderer;
     private SpriteRenderer guardSpriteRenderer;
     private Transform player;
+    private PlayerController playerController;
     private Vector2 distanceFromPlayer;
     private Vector2 facingDirection;
 
@@ -34,6 +35,7 @@ public class GuardController : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player").transform;
+        playerController = player.GetComponent<PlayerController>();
         nodeController = GameObject.Find("NodeContainer").GetComponent<NodeController>();
         guardSpriteRenderer = transform.GetComponent<SpriteRenderer>();
         aiDestinationSetter = transform.GetComponent<AIDestinationSetter>();
@@ -131,7 +133,7 @@ public class GuardController : MonoBehaviour
         RaycastHit2D playerCast = Physics2D.Raycast(transform.position, distanceFromPlayer.normalized, viewDistance);
         if (playerCast.collider && !playerCast.collider.transform.CompareTag("Player")) return false;
 
-        else return true;
+        return playerController.visible;
     }
 
     void ChangeState()

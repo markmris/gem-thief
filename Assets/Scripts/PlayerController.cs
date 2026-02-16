@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     public CinemachinePositionComposer positionComposer;
     private Vector2 moveDirection;
 
-    public bool visible;
+    public bool visible = true;
     private bool donut;
     
     private Vector2 defaultCamOffset = new Vector2(0, 0.5f);
