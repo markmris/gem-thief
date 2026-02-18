@@ -72,3 +72,7 @@ https://markmris.itch.io/gem-thief
 4. Open the "MainMenu" scene.
 
 5. Click the Play button at the top to run the game.
+
+<img width="1275" height="715" alt="image" src="https://github.com/user-attachments/assets/7be9fef7-3466-40cc-b05e-86d32980d476" />
+
+
