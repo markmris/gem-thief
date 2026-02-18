@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     public Sprite playerBack;
     public Sprite playerLeft;
     public Sprite playerRight;
-    public GameObject donutObject;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rigidBody;
 
@@ -85,15 +84,6 @@ public class PlayerController : MonoBehaviour
             }
 
             donut = true;
-        }
-        else if (collisionObj.transform.name == "Plate" && donut)
-        {
-            GameObject donutClone = Instantiate(donutObject);
-            SpriteRenderer donutRenderer = donutClone.GetComponent<SpriteRenderer>();
-            donutRenderer.sortingLayerName = "Objects";
-            donutRenderer.sortingOrder = 1;
-            donutClone.transform.position = collisionObj.transform.position;
-            collisionObj.transform.name = "UsedPlate";
         }
     }
 }

@@ -14,6 +14,7 @@ public class GuardController : MonoBehaviour
     private SpriteRenderer guardSpriteRenderer;
     private Transform player;
     private PlayerController playerController;
+    private GameOver gameOver;
     private Vector2 distanceFromPlayer;
     private Vector2 facingDirection;
 
@@ -37,6 +38,7 @@ public class GuardController : MonoBehaviour
         player = GameObject.Find("Player").transform;
         playerController = player.GetComponent<PlayerController>();
         nodeController = GameObject.Find("NodeContainer").GetComponent<NodeController>();
+        gameOver = GameObject.Find("GameOver").GetComponent<GameOver>();
         guardSpriteRenderer = transform.GetComponent<SpriteRenderer>();
         aiDestinationSetter = transform.GetComponent<AIDestinationSetter>();
 
@@ -150,6 +152,7 @@ public class GuardController : MonoBehaviour
             
             case 2:
                 statusSpriteRenderer.sprite = exclamationMarkSprite;
+                gameOver.EndGame();
                 break;
         }
     }
